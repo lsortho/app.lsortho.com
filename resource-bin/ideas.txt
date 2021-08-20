@@ -1,0 +1,6 @@
+- training manual
+- knowledge base
+- managing clinical area (who gets seated)
+- extensions (new patient/checkin/technical or clinical questions or treatment questions/consultation/finance/shipments/logistics)
+- caller id
+- patient education
