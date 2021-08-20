@@ -1,0 +1,18 @@
+1) spawn the following:
+A) secure-web-server (https://)
+B) secure-websocket-server (wss://)
+C) alasql-database-engine
+
+2) give each of the above a keytag and cipher (sidh keypair)
+A) web-keytag | web-cipher
+B) wss-keytag | wss-cipher
+C) adb-keytag | adb-cipher
+
+3) mockup the following:
+- secure-web-server sends html and upgrades to secure-websocket-server
+- secure-websocket-server sends its keytag and sidh.js to client-browser (or should sidh.js be included in the html delivery?)
+- client-browser encrypts the word 'test' with sidh.js using the secure-web-servers keytag
+- client-browser sends the encrypted word to the secure-web-server
+- secure-web-server decrypts the word using its cipher
+- successful word decryption of 'test' closes the program in 5 seconds
+*what happens on fail?

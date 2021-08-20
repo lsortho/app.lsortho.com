@@ -1,0 +1,162 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="initial-scale=1"/>
+<title>LSOrtho Web Application</title>
+<link rel="icon" href="https://cdn.jsdelivr.net/gh/lsortho/app.lsortho.com/data-depot/favicon.png"/>
+<link rel="stylesheet" media="print" onload="javascript:this.media='all'" href="https://cdn.jsdelivr.net/gh/lsortho/app.lsortho.com/code-bank/graphical-interfacing/cross-browser-reset.css"/>
+<link rel="stylesheet" media="print" onload="javascript:this.media='all'" href="https://cdn.jsdelivr.net/gh/lsortho/app.lsortho.com/code-bank/graphical-interfacing/fonts-icons-glyphs.css"/>
+<style>
+/*tag-styling*/
+small{font-size:90%}
+a{text-decoration:none;color:inherit}a:hover{text-decoration:none}@media all and (orientation:landscape){a{text-decoration:none}}
+input[type="radio"]{display:none}
+input[type="checkbox"]{display:none}
+input[type="text"]{font-style:italic}input[type="text"]:focus{font-style:normal}
+label{cursor:pointer}
+button{cursor:pointer;background:none;color:inherit;border:none;padding:0;font:inherit;outline:inherit}button:hover{text-decoration:none}
+
+/*base-styling*/
+html{height:100%;font-size:1.125em/*=18px*/;line-height:1.6em;font-family:'Montserrat',Arial,sans-serif}
+body{width:100%;display:flex;flex-direction:column;word-wrap:break-word;color:#554d4d}
+
+header{width:100%;position:sticky;top:0;display:flex;flex-direction:column;line-height:2.8vmin;font-size:2.4vmin;color:white;background:#554d4d}
+header label{display:flex;flex-direction:row;pointer-events:none}
+header input[type="radio"]:checked + label{display:none}
+header label span:first-child{flex:1 1 auto;white-space:nowrap;overflow-x:auto;overflow-y:hidden;text-align:center;padding:1vh 0}
+header label span:first-child a{pointer-events:auto;text-decoration:underline}
+header label span:last-child{flex:0 0 auto;pointer-events:auto;border-left:1px solid white;padding:1vh 1em}
+
+main{width:100%;text-align:center;padding:1em 0}
+main #lsortho-logo{width:88%}
+main #location{font-size:3.8vmin;margin-bottom:1.6em}
+main #location a{text-decoration:underline}
+main #clockbox{font-size:3.8vmin;margin-bottom:1.8em}
+main fieldset{font-size:3vmin;line-height:5vmin;margin:4vh auto;width:84%;border:solid #554d4d60 0.05em}
+main fieldset legend{text-align:left;padding:0 0.5em}
+main fieldset div{display:flex;flex-wrap:wrap;justify-content:flex-start}
+main fieldset div a:hover{color:#554d4d;background-color:white;border:solid #554d4d60 0.05em}
+main fieldset div label span:hover{color:#554d4d;background-color:white;border:solid #554d4d60 0.05em}
+main fieldset div div{flex:0 0 33.333333%;display:inline-block}
+main fieldset div label{flex:0 0 33.333333%;display:inline-block}
+main fieldset div label span{display:inline-block;font-weight:500;padding:6vmin;margin:6vmin;color:white;background-color:#554d4d;border:solid white 0.05em}
+main fieldset div div a{display:inline-block;font-weight:500;padding:6vmin;margin:6vmin;color:white;background-color:#554d4d;border:solid white 0.05em}
+main fieldset div input[type="checkbox"]:not(:checked) + div{display:none}
+main fieldset div input[type="checkbox"]:checked + div{z-index:1;display:flex;flex-direction:column;pointer-events:auto;position:fixed;left:0;top:0;bottom:0;right:0;width:100%;height:100%;background:#00000090}
+
+footer{width:100%;position:sticky;bottom:0;display:flex;flex-direction:row;line-height:2.4vmin;font-size:2vmin;background:white}
+footer div{flex:1 1 auto;padding:0.2vh 0.4vw}
+footer label{flex:0 0 auto;padding:0.2vh 0.4vw}
+footer input[type="radio"]:checked + label{display:none}
+footer input[type="radio"]:not(:checked) + label{display:inline}
+
+/*conditional-styling*/
+@media all and (orientation:portrait){
+	main fieldset div{justify-content:flex-end}
+	main fieldset div div{flex:0 0 50%}
+	main fieldset div label{flex:0 0 50%}
+}
+@media print{
+	*{-webkit-print-color-adjust:exact}@page{size:portrait/*;margin:0;max-height:100%;max-width:100%*/}
+	main fieldset div{justify-content:flex-end}
+	main fieldset div div{flex:0 0 50%}
+	main fieldset div label{flex:0 0 50%}
+	footer,header{position:static}
+}</style></head><body onload="clockBox('clockbox')" onscroll="hideOnScrollDownShowOnScrollUp(/*'hdr',*/'ftr')">
+<header id="hdr">
+	<input type="radio" id="hdr-radio"/>
+	<label for="hdr-radio">
+		<span>PARK AVENUE: <small><a target="_blank" href="tel:+1-212-755-2333">212-755-2333</a></small> & WALL STREET: <small><a target="_blank" href="tel:+1-212-871-9835">212-871-9835</a></small></span>
+		<span><i class="las la-times"></i></span>
+	</label>
+</header>
+<main id="main">
+	<img id="lsortho-logo" alt="LSOrtho Logo" src="https://cdn.jsdelivr.net/gh/lsortho/app.lsortho.com/data-depot/logo.png"/>
+	<div id="location">
+		<i class="las la-map-marker fa-lg"></i>
+		<a target="_blank" href="https://www.google.com/maps/place/Lemchen+Orthodontics,+Dr.+Marc+and+Dr.+Andrew+Lemchen/@40.764484,-73.9704515,17z/data=!3m1!4b1!4m5!3m4!1s0x89c258ef09873cbd:0xc9ae940fd75949fa!8m2!3d40.7644936!4d-73.9682743">553 Park Ave</a>
+		 | <a target="_blank" href="https://www.google.com/maps/place/Wall+Street+Orthodontics/@40.7086893,-74.0137374,17z/data=!3m1!4b1!4m5!3m4!1s0x89c25a17473f890f:0xf77be1066e7ec978!8m2!3d40.7087568!4d-74.0114909">111 Broadway</a>
+	</div>
+	<div id="clockbox"></div>
+	<fieldset><legend>Front Desk</legend>
+		<div>
+			<div><a target="_blank" href="https://lsortho.com"><i class="las la-home la-lg"></i><br/>Home</a></div>
+			<label for="checkbox-ftr"><span><i class="las la-check-circle fa-lg"></i><br/>Check in</span></label><input type="checkbox" id="checkbox-ftr"/>
+			<div>
+				<div>
+					<!--<label for="checkbox-ftr"><a target="_blank" href="https://dwservice.net">Remote Support/Access</a></label>-->
+					<label for="checkbox-ftr"><a class="las la-angle-double-up fa-lg" onclick="javascript:window.scrollTo(0,0)"></a></label>
+					<label for="checkbox-ftr"><i class="las la-times fa-lg"></i></label>
+				</div>
+			</div>
+			<div><a target="_blank" href="tel:+1-212-755-2333"><i class="las la-phone la-lg"></i><br/>Call us</a></div>
+			<div><a target="_blank" href="https://lsortho.com/contact"><i class="las la-bullhorn la-lg"></i><br/>Contact</a></div>
+		</div>
+	</fieldset>
+	<fieldset><legend>Information</legend>
+		<div>
+			<div><a target="_blank" href="https://lsortho.com/ourteam"><i class="las la-user-circle la-lg"></i><br/>Team</a></div>
+			<div><a target="_blank" href="https://lsortho.com/reviews"><i class="las la-star la-lg"></i><br/>Reviews</a></div>
+			<div><a target="_blank" href="https://lsortho.com/before-after"><i class="las la-exchange-alt la-lg"></i><br/>Before & After</a></div>
+			<div><a target="_blank" href="https://lsortho.com/contact/#block-yui_3_17_2_1_1546453421561_50268"><i class="las la-map-marked la-lg"></i><br/>Locations</a></div>
+			<div><a target="_blank" href="https://www.metaweather.com/2459115/"><i class="las la-cloud-sun la-lg"></i><br/>Weather</a></div>
+			<!--<div><a target="_blank" href="https://www.spyfu.com/overview/domain?query=lsortho.com"><i class="las la-chart-area la-lg"></i><br/>Site stats</a></div>-->
+		</div>
+	</fieldset>
+	<fieldset><legend>Entertainment</legend>
+		<div>
+			<div><a target="_blank" href="https://www.instagram.com/lsortho553"><i class="las la-image la-lg"></i><br/>Gallery</a></div>
+			<div><a target="_blank" href="https://lsortho.com/blog"><i class="las la-newspaper la-lg"></i><br/>Blog</a></div>
+			<div><a target="_blank" href="https://www.youtube.com/channel/UCMK0jO8IsRHIqePzoWiR4XA"><i class="las la-tv la-lg"></i><br/>Watch</a></div>
+			<div><a target="_blank" href="https://open.spotify.com/playlist/37i9dQZEVXbLp5XoPON0wI"><i class="las la-headphones la-lg"></i><br/>Listen</a></div>
+		</div>
+	</fieldset>
+</main>
+<footer id="ftr">
+	<div>© <script>document.write(new Date().getFullYear())</script> LEMCHEN | SALZER ORTHODONTICS PLLC</div>
+	<input type="radio" id="expanded" name="ftr-radio" value="expanded">
+	<label for="expanded" onclick="javascript:/*toggleFullscreen*/navigator.vendor.includes('Apple')?!document.webkitFullscreenElement?document.documentElement.webkitRequestFullscreen():document.webkitExitFullscreen():!document.fullscreenElement?document.documentElement.requestFullscreen():document.exitFullscreen()">
+		<i class="las la-expand"></i>
+	</label>
+	<input type="radio" id="compressed" name="ftr-radio" value="compressed" checked="checked">
+	<label for="compressed" onclick="javascript:/*toggleFullscreen*/navigator.vendor.includes('Apple')?!document.webkitFullscreenElement?document.documentElement.webkitRequestFullscreen():document.webkitExitFullscreen():!document.fullscreenElement?document.documentElement.requestFullscreen():document.exitFullscreen()">
+		<i class="las la-compress"></i>
+	</label>
+</footer>
+<script>
+/*\
+* clockBox(id) - give a clockBox to a specified element by id
+* see - https://codepen.io/jasonleewilson/pen/gPrxwX
+\*/
+function clockBox(id){
+	if((window.dayName&&window.monthName&&window.today&&window.day&&window.dayInWeek&&window.monthInYear&&window.year&&window.hour&&window.minute&&window.second&&window.millisecond)===undefined)
+	{window.dayName=new Array('Su','Mo','Tu','We','Th','Fr','Sa');window.monthName=new Array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');window.today=0;window.day=0;window.dayInWeek=0;window.monthInYear=0;window.year=0;window.hour=0;window.minute=0;window.second=0;window.millisecond=0}
+	today=new Date();day=today.getDate();dayInWeek=today.getDay();monthInYear=today.getMonth();year=today.getFullYear();hour=today.getHours();minute=today.getMinutes();second=today.getSeconds();millisecond=today.getMilliseconds()
+	if(day<=9){day="0"+day}/*if(hour===0){year=year+1900}*/if(hour<=9){hour="0"+hour}if(minute<=9){minute="0"+minute}if(second<=9){second="0"+second}if(millisecond<=9){millisecond="00"+millisecond}else if(millisecond<=99){millisecond="0"+millisecond}
+	document.getElementById(id).innerHTML=day+" "+monthName[monthInYear]+" "+year+" "+dayName[dayInWeek]+" "+hour+":"+minute//+":"+second+"."+millisecond
+	setTimeout(function(){clockBox(id)},(60*1000)-(second*1000))
+	//year+monthName[monthInYear]+day+dayName[dayInWeek]+hour+":"+minute+":"+second+"."+millisecond
+	//setTimeout(function(){clockBox(id)},1000)//time is in milliseconds
+}
+/*\
+* hideOnScrollDownShowOnScrollUp(...args) - on scroll, hides or shows the list of elements by id
+\*/
+function hideOnScrollDownShowOnScrollUp(...args){
+	if(window.prevScrollPos===undefined)window.prevScrollPos=0
+	var currentScrollPos=document.body.getBoundingClientRect().y
+	for(var index=0;index<args.length;index++){
+		if(prevScrollPos<currentScrollPos){document.getElementById(args[index]).style.visibility='visible'}
+		else if(prevScrollPos===currentScrollPos){document.getElementById(args[index]).style.visibility='visible'}
+		else{document.getElementById(args[index]).style.visibility='hidden'}
+	}prevScrollPos=currentScrollPos
+}
+/*\
+* load(id,displayId,contentId) - loads the requested element by id, displays the name of that element into the id that presents it and populates that elements data into the id that recieves that data
+* see - https://stackoverflow.com/questions/44064603/html5-websocket-wait-for-connection-and-readystate-change-before-sending-message
+\*/
+function load(id,displayId,contentId){
+	if(window.wss===undefined){window.wss=new WebSocket('wss://'+window.location.host+'/wss/')}
+	wss.addEventListener('open',function(event){
+		document.getElementById(displayId).innerHTML=id
+		document.getElementById(contentId).innerHTML=id+' data'
+		wss.send('User clicked: '+id)
+		wss.onmessage=function(event){console.log('WSS event: ',event)}
+	});
+}</script></body></html>
