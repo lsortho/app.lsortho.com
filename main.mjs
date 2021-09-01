@@ -36,6 +36,19 @@ else if(workerpool.platform==='node'){
 	if(forkCount===1){processor.singleModeInit(statsFor('unitaryGenesisProcess'),thisPool);processor.singleMode()}
 	/*Multiple process+pool mode*/
 	else if(forkCount>1){
+    import('http').then((http)=>{
+      http.get('http://httpbin.org/ip',(src)=>{
+        src.setEncoding('utf8')
+        src.on('data',(body)=>{console.log(body)})
+        src.on('error',(err)=>{console.log(err)})
+      })
+    })
+    /*browser version:
+    fetch('https://cdn.jsdelivr.net/npm/alasql/dist/alasql.js')
+      .then(src=>{return src.text()})
+      .then(txt=>{document.write(txt)})
+      .catch(err=>{log('request failed',err)})
+    */
 		import('cluster').then((cluster)=>{
 			/*Multiple process+pool mode when clusterMaster*/
 			if(cluster.isMaster){processor.multiModeInit(statsFor('clusterGenesisProcess'),thisPool);for(var i=1;i<forkCount;i++){processor.multiMode(cluster)}}
@@ -50,15 +63,3 @@ function statsFor(thisProcessType){
 	const processId=(workerpool.platform==='browser'||workerpool.platform==='node')?(workerpool.platform==='browser')?null:process.pid:(function(){throw new Error('cannot evaluate platform type for processId')})
 	return Object.assign({cpuCount:Number(cpuCount),forkCount:Number(forkCount),platformType:String(workerpool.platform),processType:thisProcessType,processId:processId},thisPool.stats())
 }
-/*\
-https://stackoverflow.com/questions/32604460/xmlhttprequest-module-not-defined-found
-axios, xhr2 libraries
-\*/
-/*
-function printRepoCount(){console.log(this.responseText)}
-
-var request=new XMLHttpRequest()
-request.onload=printRepoCount
-request.open('get','https://cdn.jsdelivr.net/npm/alasql/dist/alasql.js',true)
-request.send()
-*/
