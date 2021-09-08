@@ -14,6 +14,8 @@ console.log(plaintext)
 console.log(encrypted)
 console.log(new TextDecoder().decode(decrypted))
 
+if(typeof self === 'undefined'){console.log('we are in nodejs env')}
+
 //quorumNeeded > 2n-1=x (if n=1, offline; if n=2, online & force x to =2 via 2n-2=x; if n>2 then 2n-1=x may resolve)
 /*
 alasql("CREATE TABLE cities (city string,population number)")
