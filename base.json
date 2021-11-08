@@ -1,0 +1,11 @@
+{
+  "code-to-load":[{
+    "alasql.js":"https://cdn.jsdelivr.net/npm/alasql/dist/alasql.js",
+    "sidh.js":"https://cdn.jsdelivr.net/npm/sidh/dist/sidh.js",
+    "worker.js":"https://cdn.jsdelivr.net/npm/workerpool/dist/worker.js",
+    "workerpool.js":"https://cdn.jsdelivr.net/npm/workerpool/dist/workerpool.js",
+    "cross-browser-reset.css":"https://cdn.jsdelivr.net/gh/trpapp/workshop/stylesheets/cross-browser-reset.css",
+    "montserrat-font.css":"https://cdn.jsdelivr.net/gh/trpapp/workshop/stylesheets/montserrat-font.css",
+    "line-awesome-icons.css":"https://cdn.jsdelivr.net/gh/trpapp/workshop/stylesheets/line-awesome-icons.css"
+  }]
+}

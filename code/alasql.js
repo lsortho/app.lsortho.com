@@ -1,7 +1,7 @@
-//! AlaSQL v1.7.2 | © 2014-2018 Andrey Gershun & Mathias Rangel Wulff | License: MIT
+//! AlaSQL v1.7.3-develop-0be167bcundefined | © 2014-2018 Andrey Gershun & Mathias Rangel Wulff | License: MIT
 /*
 @module alasql
-@version 1.7.2
+@version 1.7.3-develop-0be167bcundefined
 
 AlaSQL - JavaScript SQL database
 © 2014-2016	Andrey Gershun & Mathias Rangel Wulff
@@ -142,7 +142,7 @@ var alasql = function(sql, params, cb, scope) {
 	Current version of alasql 
  	@constant {string} 
 */
-alasql.version = '1.7.2';
+alasql.version = '1.7.3-develop-0be167bcundefined';
 
 /**
 	Debug flag
@@ -4323,6 +4323,12 @@ var getXLSX = function () {
 	return XLSX;
 };
 
+var jss = JSON.stringify;
+var reName = /[^a-z\d@-_]+/gi;
+var nss = (e) => e.replace(reName, '');
+var reTick = /`/g;
+var tss = (e) => e.replace(reTick, '');
+
 // set AlaSQl path
 alasql.path = alasql.utils.findAlaSQLPath();
 
@@ -6303,7 +6309,7 @@ yy.Search.prototype.toString = function () {
 
 yy.Search.prototype.toJS = function (context) {
 
-	var s = 'this.queriesfn[' + (this.queriesidx - 1) + '](this.params,null,' + context + ')';
+	var s = 'this.queriesfn[' + jss(this.queriesidx - 1) + '](this.params,null,' + jss(context) + ')';
 	// var s = '';
 	return s;
 };
@@ -6664,11 +6670,11 @@ alasql.srch.SET = function (val, args, stope, params) {
 		.map(function (st) {
 
 			if (st.method === '@') {
-				return "alasql.vars['" + st.variable + "']=" + st.expression.toJS('x', '');
+				return 'alasql.vars[' + jss(st.variable) + ']=' + st.expression.toJS('x', '');
 			} else if (st.method === '$') {
-				return "params['" + st.variable + "']=" + st.expression.toJS('x', '');
+				return 'params[' + jss(st.variable) + ']=' + st.expression.toJS('x', '');
 			} else {
-				return "x['" + st.column.columnid + "']=" + st.expression.toJS('x', '');
+				return 'x[' + jss(st.column.columnid) + ']=' + st.expression.toJS('x', '');
 			}
 		})
 		.join(';');
@@ -6755,17 +6761,26 @@ var compileSearchOrder = function (order) {
 					s += 'if(a' + dg + '==b' + dg + '){';
 				} else {
 					s +=
-						"if((a['" +
-						columnid +
-						"']||'')" +
+						'if((a[' +
+						jss(columnid) +
+						"]||'')" +
 						dg +
 						(ord.direction === 'ASC' ? '>' : '<') +
-						"(b['" +
-						columnid +
-						"']||'')" +
+						'(b[' +
+						jss(columnid) +
+						"]||'')" +
 						dg +
 						')return 1;';
-					s += "if((a['" + columnid + "']||'')" + dg + "==(b['" + columnid + "']||'')" + dg + '){';
+					s +=
+						'if((a[' +
+						jss(columnid) +
+						"]||'')" +
+						dg +
+						'==(b[' +
+						jss(columnid) +
+						"]||'')" +
+						dg +
+						'){';
 				}
 			} else {
 				dg = '.valueOf()';
@@ -7958,7 +7973,7 @@ yy.Select.prototype.compile = function (databaseid, params) {
 			// If this is INTO() function, then call it
 			// with one or two parameters
 			//
-			var qs = "return alasql.into[" + JSON.stringify(this.into.funcid.toUpperCase()) + "](";
+			var qs = 'return alasql.into[' + JSON.stringify(this.into.funcid.toUpperCase()) + '](';
 			if (this.into.args && this.into.args.length > 0) {
 				qs += this.into.args[0].toJS() + ',';
 				if (this.into.args.length > 1) {
@@ -8404,7 +8419,7 @@ yy.Select.prototype.compileFrom = function (query) {
 			ps += ');if(cb)res=cb(res,idx,query);return res';
 			source.datafn = new Function('query,params,cb,idx,alasql', ps);
 		} else if (tq instanceof yy.FuncValue) {
-			ps = "var res=alasql.from[" + JSON.stringify(tq.funcid.toUpperCase()) + "](";
+			ps = 'var res=alasql.from[' + JSON.stringify(tq.funcid.toUpperCase()) + '](';
 
 			if (tq.args && tq.args.length > 0) {
 				if (tq.args[0]) {
@@ -8667,7 +8682,7 @@ yy.Select.prototype.compileJoins = function (query) {
 			};
 			// source.data = ;
 
-			var s = "var res=alasql.from[" + JSON.stringify(jn.func.funcid.toUpperCase()) + "](";
+			var s = 'var res=alasql.from[' + JSON.stringify(jn.func.funcid.toUpperCase()) + '](';
 
 			var args = jn.func.args;
 			if (args && args.length > 0) {
@@ -10841,7 +10856,7 @@ yy.Op.prototype.toJS = function (context, tableid, defcols) {
 			if (!(!this.right.args || 0 === this.right.args.length)) {
 				var ss = this.right.args.map(ref);
 			}
-			s = '' + ljs + "[" + JSON.stringify(this.right.funcid) + "](" + ss.join(',') + ')';
+			s = '' + ljs + '[' + JSON.stringify(this.right.funcid) + '](' + ss.join(',') + ')';
 		} else {
 			s = '' + ljs + '[' + rightJS() + ']';
 		}
@@ -11816,10 +11831,13 @@ stdlib.MIN = stdlib.LEAST = function () {
 	);
 };
 
-stdlib.SUBSTRING = stdlib.SUBSTR = stdlib.MID = function (a, b, c) {
-	if (arguments.length == 2) return und(a, 'y.substr(' + b + '-1)');
-	else if (arguments.length == 3) return und(a, 'y.substr(' + b + '-1,' + c + ')');
-};
+stdlib.SUBSTRING =
+	stdlib.SUBSTR =
+	stdlib.MID =
+		function (a, b, c) {
+			if (arguments.length == 2) return und(a, 'y.substr(' + b + '-1)');
+			else if (arguments.length == 3) return und(a, 'y.substr(' + b + '-1,' + c + ')');
+		};
 
 stdfn.REGEXP_LIKE = function (a, b, c) {
 
@@ -12043,13 +12061,16 @@ alasql.aggr.VARP = function (v, s, stage) {
 	}
 };
 
-alasql.aggr.STD = alasql.aggr.STDDEV = alasql.aggr.STDEVP = function (v, s, stage) {
-	if (stage == 1 || stage == 2) {
-		return alasql.aggr.VARP(v, s, stage);
-	} else {
-		return Math.sqrt(alasql.aggr.VARP(v, s, stage));
-	}
-};
+alasql.aggr.STD =
+	alasql.aggr.STDDEV =
+	alasql.aggr.STDEVP =
+		function (v, s, stage) {
+			if (stage == 1 || stage == 2) {
+				return alasql.aggr.VARP(v, s, stage);
+			} else {
+				return Math.sqrt(alasql.aggr.VARP(v, s, stage));
+			}
+		};
 
 alasql._aggrOriginal = alasql.aggr;
 alasql.aggr = {};
@@ -12071,34 +12092,37 @@ for (var i = 0; i < 256; i++) {
 	lut[i] = (i < 16 ? '0' : '') + i.toString(16);
 }
 
-stdfn.NEWID = stdfn.UUID = stdfn.GEN_RANDOM_UUID = function () {
-	var d0 = (Math.random() * 0xffffffff) | 0;
-	var d1 = (Math.random() * 0xffffffff) | 0;
-	var d2 = (Math.random() * 0xffffffff) | 0;
-	var d3 = (Math.random() * 0xffffffff) | 0;
-	return (
-		lut[d0 & 0xff] +
-		lut[(d0 >> 8) & 0xff] +
-		lut[(d0 >> 16) & 0xff] +
-		lut[(d0 >> 24) & 0xff] +
-		'-' +
-		lut[d1 & 0xff] +
-		lut[(d1 >> 8) & 0xff] +
-		'-' +
-		lut[((d1 >> 16) & 0x0f) | 0x40] +
-		lut[(d1 >> 24) & 0xff] +
-		'-' +
-		lut[(d2 & 0x3f) | 0x80] +
-		lut[(d2 >> 8) & 0xff] +
-		'-' +
-		lut[(d2 >> 16) & 0xff] +
-		lut[(d2 >> 24) & 0xff] +
-		lut[d3 & 0xff] +
-		lut[(d3 >> 8) & 0xff] +
-		lut[(d3 >> 16) & 0xff] +
-		lut[(d3 >> 24) & 0xff]
-	);
-};
+stdfn.NEWID =
+	stdfn.UUID =
+	stdfn.GEN_RANDOM_UUID =
+		function () {
+			var d0 = (Math.random() * 0xffffffff) | 0;
+			var d1 = (Math.random() * 0xffffffff) | 0;
+			var d2 = (Math.random() * 0xffffffff) | 0;
+			var d3 = (Math.random() * 0xffffffff) | 0;
+			return (
+				lut[d0 & 0xff] +
+				lut[(d0 >> 8) & 0xff] +
+				lut[(d0 >> 16) & 0xff] +
+				lut[(d0 >> 24) & 0xff] +
+				'-' +
+				lut[d1 & 0xff] +
+				lut[(d1 >> 8) & 0xff] +
+				'-' +
+				lut[((d1 >> 16) & 0x0f) | 0x40] +
+				lut[(d1 >> 24) & 0xff] +
+				'-' +
+				lut[(d2 & 0x3f) | 0x80] +
+				lut[(d2 >> 8) & 0xff] +
+				'-' +
+				lut[(d2 >> 16) & 0xff] +
+				lut[(d2 >> 24) & 0xff] +
+				lut[d3 & 0xff] +
+				lut[(d3 >> 8) & 0xff] +
+				lut[(d3 >> 16) & 0xff] +
+				lut[(d3 >> 24) & 0xff]
+			);
+		};
 
 /*
 //
@@ -18750,6 +18774,7 @@ LS.dropDatabase = function (lsdbid, ifexists, cb) {
 
 LS.attachDatabase = function (lsdbid, databaseid, args, params, cb) {
 	var res = 1;
+	//	console.warn({lsdbid, databaseid, args, params, cb, dbs: Object.keys(alasql.databases)})
 	if (alasql.databases[databaseid]) {
 		throw new Error('Unable to attach database as "' + databaseid + '" because it already exists');
 	}
@@ -19652,7 +19677,14 @@ var saveAs =
 		FS_proto.WRITING = 1;
 		FS_proto.DONE = 2;
 
-		FS_proto.error = FS_proto.onwritestart = FS_proto.onprogress = FS_proto.onwrite = FS_proto.onabort = FS_proto.onerror = FS_proto.onwriteend = null;
+		FS_proto.error =
+			FS_proto.onwritestart =
+			FS_proto.onprogress =
+			FS_proto.onwrite =
+			FS_proto.onabort =
+			FS_proto.onerror =
+			FS_proto.onwriteend =
+				null;
 
 		return saveAs;
 	})(
@@ -19703,3 +19735,4 @@ alasql.use("alasql");
 
 return alasql;
 }));
+

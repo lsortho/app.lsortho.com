@@ -1,4 +1,4 @@
-import {workerpool,sidh,alasql,processor} from './code-bank/code-loader.mjs'
+import {workerpool,sidh,alasql,processor} from './code/importer.mjs'
 
 const cpuCount=1//workerpool.cpus
 const thisPool=workerpool.pool()
