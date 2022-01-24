@@ -42,6 +42,19 @@ main fieldset div div a{display:inline-block;font-weight:500;padding:6vmin;margi
 main fieldset div input[type="checkbox"]:not(:checked) + div{display:none}
 main fieldset div input[type="checkbox"]:checked + div{z-index:1;display:flex;flex-direction:column;pointer-events:auto;position:fixed;left:0;top:0;bottom:0;right:0;width:100%;height:100%;background:#00000090}
 
+table th{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #554d4d;
+  color: white;
+}
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+table tr:nth-child(even){background-color:#f2f2f2}
+table tr:hover {background-color:#ddd}
+
 footer{width:100%;position:sticky;position:-webkit-sticky;bottom:0;display:flex;flex-direction:row;line-height:2.4vmin;font-size:2vmin;background:white}
 footer div{flex:1 1 auto;padding:0.2vh 0.4vw}
 footer label{flex:0 0 auto;padding:0.2vh 0.4vw}
@@ -79,12 +92,33 @@ footer input[type="radio"]:not(:checked) + label{display:inline}
 	<fieldset><legend>Front Desk</legend>
 		<div>
 			<div><a target="_blank" href="https://lsortho.com"><i class="las la-home la-lg"></i><br/>Home</a></div>
-			<label for="checkbox-ftr"><span><i class="las la-check-circle fa-lg"></i><br/>Check in</span></label><input type="checkbox" id="checkbox-ftr"/>
+			<label for="checkbox-ftr"><span><i class="las la-check-circle fa-lg"></i><br/>Check-in</span></label><input type="checkbox" id="checkbox-ftr"/>
 			<div>
-				<div>
+				<div style="display:flex;position:fixed;left:0;right:0;top:0;bottom:0;width:100%;height:100%">
 					<!--<label for="checkbox-ftr"><a target="_blank" href="https://dwservice.net">Remote Support/Access</a></label>-->
-					<label for="checkbox-ftr"><a class="las la-angle-double-up fa-lg" onclick="javascript:window.scrollTo(0,0)"></a></label>
-					<label for="checkbox-ftr"><i class="las la-times fa-lg"></i></label>
+					<label style="position:absolute;top:0;right:0;padding:0.6em;background-color:white;" for="checkbox-ftr"><i class="las la-times fa-lg"></i></label>
+					<div style="width:80%;margin-left:10%;margin-right:10%;height:100%;position:absolute;background:white;overflow:auto">
+						<div>
+							<h1>CHECK-IN</h1>
+							<div style="margin:2em 0">[full name], [time of appointment], [key], [submit]</div>
+							<!--status (awaiting check-in approval*orange, checked in*green, checked out*purple), full name, time of submission, time of appointment, ifkey=check-in*green,check-out*purple,delete*red-->
+							<table style="text-align:left;border-collapse:collapse;margin-left:2%;margin-right:2%;width:96%" id="people">
+								<tr>
+								  <th>Check-in Status</th>
+								  <th>Full Name</th>
+								  <th>Time Of Submission</th>
+								  <th>Time Of Appointment</th>
+								</tr>
+								<tr>
+								  <td>Awaiting Check-in</td>
+								  <td>John Doe</td>
+								  <td>1970 Jan 01 Th 00:00</td>
+								  <td>1970 Jan 01 Th 00:01</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<label style="position:absolute;bottom:0;right:0" for="checkbox-ftr"><a style="margin:0;padding:0.6em" class="las la-angle-double-up fa-lg" onclick="javascript:window.scrollTo(0,0)"></a></label>
 				</div>
 			</div>
 			<div><a target="_blank" href="tel:+1-212-755-2333"><i class="las la-phone la-lg"></i><br/>Call us</a></div>
@@ -131,7 +165,7 @@ function clockBox(id){
 	{window.dayName=new Array('Su','Mo','Tu','We','Th','Fr','Sa');window.monthName=new Array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');window.today=0;window.day=0;window.dayInWeek=0;window.monthInYear=0;window.year=0;window.hour=0;window.minute=0;window.second=0;window.millisecond=0}
 	today=new Date();day=today.getDate();dayInWeek=today.getDay();monthInYear=today.getMonth();year=today.getFullYear();hour=today.getHours();minute=today.getMinutes();second=today.getSeconds();millisecond=today.getMilliseconds()
 	if(day<=9){day="0"+day}/*if(hour===0){year=year+1900}*/if(hour<=9){hour="0"+hour}if(minute<=9){minute="0"+minute}if(second<=9){second="0"+second}if(millisecond<=9){millisecond="00"+millisecond}else if(millisecond<=99){millisecond="0"+millisecond}
-	document.getElementById(id).innerHTML=day+" "+monthName[monthInYear]+" "+year+" "+dayName[dayInWeek]+" "+hour+":"+minute//+":"+second+"."+millisecond
+	document.getElementById(id).innerHTML=year+" "+monthName[monthInYear]+" "+day+" "+dayName[dayInWeek]+" "+hour+":"+minute//+":"+second+"."+millisecond
 	setTimeout(function(){clockBox(id)},(60*1000)-(second*1000))
 	//year+monthName[monthInYear]+day+dayName[dayInWeek]+hour+":"+minute+":"+second+"."+millisecond
 	//setTimeout(function(){clockBox(id)},1000)//time is in milliseconds
